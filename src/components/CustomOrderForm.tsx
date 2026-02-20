@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Check, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 // --- Zod Schemas per step ---
 const step1Schema = z.object({
@@ -33,6 +34,7 @@ const step3Schema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(7, "Phone number is required"),
   message: z.string().optional(),
+  recaptchaToken: z.string().min(1, "Please complete the reCAPTCHA"),
 });
 
 const fullSchema = step1Schema.merge(step2Schema).merge(step3Schema);
@@ -56,6 +58,7 @@ export function CustomOrderForm() {
       email: "",
       phone: "",
       message: "",
+      recaptchaToken: "",
     },
     mode: "onTouched",
   });
@@ -208,11 +211,11 @@ export function CustomOrderForm() {
                   <Textarea id="message" {...register("message")} rows={3} />
                 </div>
 
-                {/* reCAPTCHA placeholder */}
-                <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 p-3 text-sm text-muted-foreground">
-                  <ShieldCheck className="h-5 w-5 text-primary" />
-                  <span>reCAPTCHA verification will appear here</span>
-                </div>
+                <ReCAPTCHA
+                  sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                  onChange={(value) => setValue("recaptchaToken", value ?? "", { shouldValidate: true })}
+                />
+                {errors.recaptchaToken && <p className="mt-1 text-sm text-destructive">{errors.recaptchaToken.message}</p>}
               </div>
             )}
 

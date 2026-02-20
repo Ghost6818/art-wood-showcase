@@ -11,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Paintbrush, Hammer, Leaf } from "lucide-react";
 import type { Project, ProjectSummary } from "@/types/project";
 import { isFurniture, isCanvas, type WorkItem } from "@/types/project";
+import { calculatePrice } from "@/utils/calculations";
 
 // Demo: Type Guard usage
 const demoItems: WorkItem[] = [
@@ -19,6 +20,11 @@ const demoItems: WorkItem[] = [
 ];
 
 const Index = () => {
+  // Function overloading demo
+  const oakPrice = calculatePrice(500, "Oak");     // 750 (500 * 1.5)
+  const pinePrice = calculatePrice(500, "Pine");   // 550 (500 * 1.1)
+  const detailPrice = calculatePrice(500, 3);      // 800 (500 + 3*100)
+
   // Type guard demo
   demoItems.forEach((item) => {
     if (isFurniture(item)) {
@@ -90,6 +96,21 @@ const Index = () => {
               </div>
               <h3 className="font-display text-xl font-semibold mb-2">{svc.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{svc.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Price calculation demo using function overloading */}
+        <div className="mt-10 grid gap-4 sm:grid-cols-3 text-center">
+          {[
+            { label: "Oak Base (500€)", value: `€${oakPrice}`, note: "×1.5 wood multiplier" },
+            { label: "Pine Base (500€)", value: `€${pinePrice}`, note: "×1.1 wood multiplier" },
+            { label: "Detail Level 3 (500€)", value: `€${detailPrice}`, note: "+300€ flat fee" },
+          ].map((calc) => (
+            <div key={calc.label} className="rounded-lg border border-border/50 bg-card p-4">
+              <p className="text-xs text-muted-foreground mb-1">{calc.label}</p>
+              <p className="font-display text-2xl font-bold text-primary">{calc.value}</p>
+              <p className="text-xs text-muted-foreground mt-1">{calc.note}</p>
             </div>
           ))}
         </div>
