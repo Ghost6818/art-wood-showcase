@@ -80,39 +80,41 @@ function GalleryGrid() {
       {projects.map((project, i) => (
         <Card
           key={project.id}
-          className="group cursor-pointer overflow-hidden border-border/50 transition-all duration-300 hover:shadow-warm hover:-translate-y-1"
+          className="@container group cursor-pointer overflow-hidden border-border/50 transition-all duration-300 hover:shadow-warm hover:-translate-y-1"
           style={{ animationDelay: `${i * 100}ms` }}
           onClick={() => setSelectedProject(project)}
         >
-          <div className="relative overflow-hidden aspect-[4/3]">
-            <img
-              src={project.imageUrl}
-              alt={project.title}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-            />
-            <Badge className={`absolute top-3 right-3 ${statusColor[project.status] || ""}`}>
-              {project.status}
-            </Badge>
-          </div>
-          <CardContent className="p-4">
-            <h3 className="font-display text-lg font-semibold text-foreground mb-1">{project.title}</h3>
-            <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{project.description}</p>
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>{project.woodType}</span>
-              {project.price && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="flex items-center gap-1 text-accent font-medium">
-                      <DollarSign className="h-3 w-3" />
-                      {project.price}
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>Estimated project cost</TooltipContent>
-                </Tooltip>
-              )}
+          <div className="@md:flex-row flex flex-col">
+            <div className="relative overflow-hidden aspect-[4/3] @md:aspect-auto @md:w-2/5">
+              <img
+                src={project.imageUrl}
+                alt={project.title}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              <Badge className={`absolute top-3 right-3 ${statusColor[project.status] || ""}`}>
+                {project.status}
+              </Badge>
             </div>
-          </CardContent>
+            <CardContent className="p-4 @md:flex-1">
+              <h3 className="font-display text-lg font-semibold text-foreground mb-1">{project.title}</h3>
+              <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{project.description}</p>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>{project.woodType}</span>
+                {project.price && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="flex items-center gap-1 text-accent font-medium">
+                        <DollarSign className="h-3 w-3" />
+                        {project.price}
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>Estimated project cost</TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
+            </CardContent>
+          </div>
         </Card>
       ))}
     </div>
